@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SmartContactManagerApplication {
 
 	public static void main(String[] args) {
+		EnvConfig configs = new EnvConfig(); 
 		SpringApplication.run(SmartContactManagerApplication.class, args);
 	}
 
