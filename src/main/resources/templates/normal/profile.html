@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{normal/base::Layout(~{::section})}">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}">Profile View</title>
+
+<style>
+		.profile-card {
+			max-width: 700px;
+			margin: auto;
+			margin-top: 30px;
+			box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+			border-radius: 10px;
+		}
+		.card-title {
+			font-weight: bold;
+			font-size: 24px;
+			text-align: center;
+			color: #333;
+		}
+		.profile-icon {
+			font-size: 50px;
+			text-align: center;
+			color: #0d6efd;
+		}
+		th {
+			width: 30%;
+		}
+		tbody tr:hover {
+			background-color: #f8f9fa;
+		}
+	</style>
+
+</head>
+<body>
+<section>
+	<div class="container text-center">
+		<div class="card profile-card">
+			<div class="card-body">
+				
+				<div class="profile-icon mb-2 text-center">
+					<img style="height: 250px; width: 250px;"
+     th:src="@{'/img/' + ${user.imageUrl}}"
+     alt="profile photo"
+     class="my_profile"
+     onerror="this.onerror=null; this.src='/img/default.png';" />
+					
+				</div>
+
+				<h5 th:text="${user.name}" class="card-title mb-4 text-center">User Profile</h5>
+
+				<table class="table table-bordered table-hover">
+					<thead class="table-light">
+						<tr>
+							<th scope="col">User ID</th>
+							<th scope="col"><span th:text="'US-' + ${user.Id}"></span></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row">Email</th>
+							<td th:text="${user.email}"></td>
+						</tr>
+						<tr>
+							<th scope="row">Role</th>
+							<td th:utext="${user.role}"></td>
+						</tr>
+						<tr>
+							<th scope="row">Account Active</th>
+							<td th:text="${user.enabled} ? 'Yes' : 'No'"></td>
+						</tr>
+						<tr>
+							<th scope="row">About You</th>
+							<td th:text="${user.about}"></td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+	</div>
+</section>
+
+
+
+</body>
+</body>
+
+</html>

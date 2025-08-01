@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="Layout(content)">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title th:text="${title}">Base File</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+	integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+
+</head>
+<body>
+	<nav
+		class="navbar fixed-top navbar-expand-lg navbar-dark bg-light bg-primary">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">Smart Contact Manager</a>
+
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+				<ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-uppercase">
+
+					<li class="nav-item"><a class="nav-link active"
+						aria-current="page" th:href="@{/}">Home</a></li>
+
+
+					<li class="nav-item"><a class="nav-link " tabindex="-1"
+						aria-disabled="true"><span th:text="${user.name}"></span></a></li>
+					<li class="nav-item"><a class="nav-link " th:href="@{/logout}"
+						tabindex="-1" aria-disabled="true">Logout</a></li>
+				</ul>
+
+
+			</div>
+		</div>
+	</nav>
+
+	<div class="sidebar mt-2">
+	<span onclick="toggleSidebar()" class="crossBtn">&times;</span>
+
+	<a id="home-link" th:href="@{/user/index}" class="item "
+	   onclick="setActiveLink('/user/index')">
+		<i class="fa-regular fa-house"></i>Home
+	</a>
+
+	<a th:href="@{/user/show_contact/0}" class="item sidebar-link"
+	   onclick="setActiveLink('/user/show_contact/0')">
+		<i class="fa-solid fa-id-card"></i>View Contacts
+	</a>
+
+	<a th:href="@{/user/add_contact}" class="item sidebar-link"
+	   onclick="setActiveLink('/user/add_contact')">
+		<i class="fas fa-pen"></i>Add Contact
+	</a>
+
+	<a th:href="@{/user/profile}" class="item sidebar-link"
+	   onclick="setActiveLink('/user/profile')">
+		<i class="fa-solid fa-user"></i>Your profile
+	</a>
+
+	<a th:href="@{/user/setting}" class="item" onclick="setActiveLink('#')">
+		<i class="fas fa-cog"></i>Settings
+	</a>
+
+	<a th:href="@{/logout}" class="item" onclick="localStorage.removeItem('activeSidebarLink')">
+		<i class="fa-solid fa-arrow-right-from-bracket"></i>Logout
+	</a>
+
+	<div class="divider"></div>
+</div>
+	
+
+
+	<div class="content mt-5">
+		<i onclick="toggleSidebar()" class="fa-solid fa-bars"></i>
+		<div th:if="${session.message}" class="container mt-3">
+			<div th:class="'alert alert-' + ${session.message.type}"
+				class="alert text-center" role="alert">
+				<span class="text-center" th:text="${session.message.content}"></span>
+			</div>
+		</div>
+
+
+		<div th:replace="${content}"></div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script th:src="@{/js/script.js}" defer></script>
+	
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+function deleteContact(cid) {
+	  console.log("deleteContact called with id:", cid);
+	  Swal.fire({
+	    title: 'Are you sure?',
+	    text: "You want to delete this contact?",
+	    icon: 'warning',
+	    showCancelButton: true,
+	    confirmButtonColor: '#d33',
+	    cancelButtonColor: '#3085d6',
+	    confirmButtonText: 'Yes, delete it!',
+	    cancelButtonText: 'No, keep it'
+	  }).then((result) => {
+	    if (result.isConfirmed) {
+	      
+	      window.location.href = '/user/delete/' + cid;
+	    } else if (result.dismiss === Swal.DismissReason.cancel) {
+	      
+	      Swal.fire(
+	        'Cancelled',
+	        'Your contact is safe :)',
+	        'info'
+	      );
+	    }
+	  });
+	}
+
+</script>
+
+
+	
+<script src="https://cdn.tiny.cloud/1/zdlje59wlr853j1z6exk7p56ky4g038kpgfrruxxz6s68sga/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+  tinymce.init({
+    selector: '#mytext',
+    plugins: 'lists link image preview code',
+    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | bullist numlist | link image | preview code',
+    menubar: false,
+    height: 300
+  });
+
+</script>
+</body>
+</html>
